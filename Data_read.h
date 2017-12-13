@@ -40,6 +40,8 @@ int Arduino_read(int fd, unsigned char *Dataint_inbuff, float *Dataint)
 	//printf("*(Dataint+0)=%f\n",*(Dataint+0));
 
     }
+    //printf("Fr1_d = %f\n",*(Dataint+0));
+    //printf("Fr1 = %f\n",(*(Dataint+0)/1023*5 - 2.5)/2.5*20);
     // Throttle For S1
     *(Dataint+6) = (float)(Dataint_inbuff[k+13]);
     // RPM for S1
@@ -55,6 +57,6 @@ int Arduino_read(int fd, unsigned char *Dataint_inbuff, float *Dataint)
 
 float FMint2float(float FMint, float range)
 {
-    float FMfloat = ((float)FMint/1023*5 - 2.5)/2.5*range;
+    float FMfloat = (FMint/1024*5 - 2.5)/2.5*range;
     return FMfloat;
 }

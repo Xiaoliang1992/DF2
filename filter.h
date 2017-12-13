@@ -55,7 +55,7 @@ void data_instructor_init(data_instructor * data_ins)
 	data_ins->d_mean_0 = 0;
 	data_ins->d_mean_1 = 0;
 	int i = 0;
-	data_ins->num = 20;
+	data_ins->num = 50;
 }
 
 int data_instructor_insert(float data, data_instructor * data_ins)

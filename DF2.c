@@ -19,9 +19,9 @@
 #include"filter.h"
 
 //==========================Parameters==========================//
-float Ts = 100;// Control time in ms
+float Ts = 80;// Control time in ms
 float Fr12_range = 20.0, Mr12_range = 3.0, Fd12_range = 5.0; 
-float Filter_para = 0.1;
+float Filter_para = 0.25;
 float data_disconf_min = 0.05;
 //=================================================================//	
 struct timeval tstartc, tsendc;
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 
 
 
-    //zero_calibration();
+    zero_calibration();
 
     while(1)
     {
@@ -151,8 +151,8 @@ void data_aquision(void)
 		Mr2 = fabs(FMint2float(Dataint[5], Mr12_range) - d_Mr2);
 		thr1 = (float)(Dataint[6])/255 + 0.0;
 		thr2 = (float)(Dataint[8])/255 + 0.0;
-		nr1 = 60 / (Dataint[7]/1000000*14 + 0.0001);
-		nr2 = 60 / (Dataint[9]/1000000*14 + 0.0001);
+		nr1 = 60 / (Dataint[7]/1000000*24/2 + 0.000000001)*8160/7290;
+		nr2 = 60 / (Dataint[9]/1000000*24/2 + 0.000000001)*8160/7290;
 		if (nr1 > 50000) nr1 = 0;
 		if (nr2 > 50000) nr2 = 0;
 
@@ -179,8 +179,8 @@ void data_aquision(void)
         Fr12 = Fr1_f + Fr2_f;
         Fd12 = Fd1_f + Fd2_f;
         Fall = Fr12 + Fd12;
-        P1 = Fr1*nr1/9549*1000;
-        P2 = Fr2*nr2/9549*1000;
+        P1 = Mr1*nr1*3.141/30;
+        P2 = Mr2*nr2*3.141/30;
         Pall = P1 + P2;
 	}
 
@@ -217,13 +217,13 @@ void zero_calibration(void)
 
 void save_poit(void)
 {
-	fprintf(point_save, "%.3f %.0f %.0f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", sys_time, nr1, nr2, Fr1_f, Fr2_f, Fd1_f, Fd2_f, Mr1_f, Mr2_f, data_disconf);
+	fprintf(point_save, "%.3f %.0f %.0f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f\n", sys_time, nr1, nr2, Fr1_f, Fr2_f, Fd1_f, Fd2_f, Mr1_f, Mr2_f, data_disconf,Pall,Fall);
     n_save_points += 1;
 }
 
 void save_data(void)
 {
-	fprintf(data_save, "%.3f %.0f %.0f %.2f %.2f %.2f %.2f %.2f %.2f\n", sys_time, nr1, nr2, Fr1_f, Fr2_f, Fd1_f, Fd2_f, Mr1_f, Mr2_f);
+	fprintf(data_save, "%.3f %.0f %.0f %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f\n", sys_time, nr1, nr2, Fr1_f, Fr2_f, Fd1_f, Fd2_f, Mr1_f, Mr2_f,Pall, Fall);
 }
 
 void printf_data(void)
@@ -286,7 +286,7 @@ void control_command(void)
     if (c_command == 'c')
     {
         c_command = '0';
-        //zero_calibration();
+        zero_calibration();
     }
 }
 

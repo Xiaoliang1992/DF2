@@ -1,0 +1,5 @@
+-------------------------- Notes --------------------------------
+sys_time, nr1, nr2, Fr1_f, Fr2_f, Fd1_f, Fd2_f, Mr1_f, Mr2_f, data_disconf
+
+q
+
