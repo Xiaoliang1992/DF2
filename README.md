@@ -1,4 +1,3 @@
 # DF2
-For ducted fan test. This is my first time to use git.
+For ducted fan test. 
 
-From Xiaoliang1992
